@@ -5,6 +5,7 @@ import argparse
 # in this directory, there are some subdirectory: `bc  bn  mz  nw  pt  tc  wb`
 base_dir = "/cldata/LDC/ontonotes-release-5.0/data/files/data/english/annotations"
 
+
 def onf_parser(texts):
     def _process_line(text):
         text = text.strip()
