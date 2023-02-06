@@ -7,7 +7,7 @@ import json
 
 # the location of sense inventories
 base_dir = "/cldata/LDC/ontonotes-release-5.0/data/files/data/english/metadata/sense-inventories"
-
+output_path = "data/ontonotes/usages.json"
 
 def extract_usages():
     target_files = os.listdir(base_dir)
@@ -55,7 +55,6 @@ def extract_usages():
 
 if __name__ == "__main__":
     sense_dict = extract_usages()
-    output_path = "./data/usages.json"
     with open(output_path, "w") as f:
         json.dump(sense_dict, f, indent=4)
                 

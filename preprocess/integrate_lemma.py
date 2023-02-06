@@ -1,7 +1,7 @@
 import json
 
-usages_path = "data/usages.json"
-output_path = "data/usages_integrated.json"
+usages_path = "data/ontonotes/usages.json"
+output_path = "data/ontonotes/usages_integrated.json"
 
 with open(usages_path, "r") as f:
     usages = json.load(f)
@@ -16,7 +16,7 @@ for lemma_pos, vals in usages.items():
     if lemma not in usages_new.keys():
         usages_new[lemma] = {}
     for sense_num, definition_usages in vals.items():
-        pos_sense_num = pos + sense_num
+        pos_sense_num = pos + "-" + sense_num
         usages_new[lemma][pos_sense_num] = definition_usages
 
 with open(output_path, "w") as f:
