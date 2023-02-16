@@ -114,10 +114,10 @@ def nearest_neighbor_search(ontonotes_data, coha_data, k=1):
         results.append([dist[0][0], ind[0][0], ontonotes_labels[ind[0][0]], coha_sents[i]])
     return results
 
-def execute_faiss(target_word):
-    with open(f"data/embeddings/{target_word}_ontonotes.json", "r") as f:
+def execute_faiss(ontonotes_data_path, coha_data_path):
+    with open(ontonotes_data_path, "r") as f:
         ontonotes_embeddings = json.load(f)
-    with open(f"data/embeddings/{target_word}_coha.json", "r") as f:
+    with open(coha_data_path, "r") as f:
         coha_embeddings = json.load(f)
     results = nearest_neighbor_search(ontonotes_embeddings, coha_embeddings)
     used_senses = set()
@@ -137,13 +137,13 @@ def load_coha_data(data_path, target_word):
 
 def main(target_words):
     tokenizer, model = from_pretrained(model_name)
-    ontonotes_data = load_ontonotes_data("data/ontonotes/usages_integrated.json")
+    ontonotes_data = load_ontonotes_data(json_path)
     for target_word in target_words:
         ontonotes_data_path = f"data/embeddings/{target_word}_ontonotes.json"
         coha_data_path = f"data/embeddings/{target_word}_coha.json"
         if os.path.exists(ontonotes_data_path) and os.path.exists(coha_data_path):
             print("Data already exisits!")
-            execute_faiss(target_word)
+            execute_faiss(ontonotes_data_path, coha_data_path)
             continue
         assert target_word in ontonotes_data.keys()
         assert os.path.exists(os.path.join(data_path, target_word + ".txt"))
@@ -155,7 +155,7 @@ def main(target_words):
             json.dump(ontonotes_embeddings, f, indent=4)
         with open(coha_data_path, "w") as f:
             json.dump(coha_embeddings, f, indent=4)
-        execute_faiss(target_word)
+        execute_faiss(ontonotes_data_path, coha_data_path)
         
 if __name__ == "__main__":
     main(["coach"])
