@@ -37,7 +37,7 @@ def load_data(data_path):
 parser = argparse.ArgumentParser()
 parser.add_argument('target_words', type=str, nargs='+')
 parser.add_argument('--input-path', default='/home/seiichi/coha/data/coha_lemmatized.pickle', type=str)
-parser.add_argument('--output-path', default='data/coha', type=str)
+parser.add_argument('--output-path', default='data/text/coha', type=str)
 args = parser.parse_args()
 
 data = load_data(args.input_path)

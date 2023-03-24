@@ -1,7 +1,7 @@
 import json
 
-usages_path = "data/ontonotes/usages.json"
-output_path = "data/ontonotes/usages_integrated.json"
+usages_path = "data/text/ontonotes/usages.json"
+output_path = "data/text/ontonotes/usages_integrated.json"
 
 with open(usages_path, "r") as f:
     usages = json.load(f)

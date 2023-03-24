@@ -1,6 +1,7 @@
 import os
 import json
 import pickle
+from collections import defaultdict
 import faiss
 import numpy as np
 from nltk.stem import WordNetLemmatizer
@@ -9,8 +10,8 @@ from transformers import BertConfig, BertForPreTraining, \
                          BertTokenizer
 
 model_name = "bert-base-uncased"  # recommended
-json_path = "data/ontonotes/usages_integrated.json"
-data_path = "data/coha"
+json_path = "data/text/ontonotes/usages_integrated.json"
+data_path = "data/text/coha"
 lemmatizer = WordNetLemmatizer()
 
 
@@ -121,9 +122,11 @@ def execute_faiss(ontonotes_data_path, coha_data_path):
         coha_embeddings = json.load(f)
     results = nearest_neighbor_search(ontonotes_embeddings, coha_embeddings)
     used_senses = set()
+    used_sense_cnt = defaultdict(int)
     for _, _, label, _ in results:
         used_senses.add(label)
-    print(len(used_senses), used_senses)
+        used_sense_cnt[label] += 1
+    print(len(used_senses), used_senses, used_sense_cnt)
         
 def load_ontonotes_data(json_path):
     with open(json_path, "r") as f:
@@ -139,8 +142,8 @@ def main(target_words):
     tokenizer, model = from_pretrained(model_name)
     ontonotes_data = load_ontonotes_data(json_path)
     for target_word in target_words:
-        ontonotes_data_path = f"data/embeddings/{target_word}_ontonotes.json"
-        coha_data_path = f"data/embeddings/{target_word}_coha.json"
+        ontonotes_data_path = f"data/embeddings/ontonotes/{target_word}.json"
+        coha_data_path = f"data/embeddings/coha/{target_word}.json"
         if os.path.exists(ontonotes_data_path) and os.path.exists(coha_data_path):
             print("Data already exisits!")
             execute_faiss(ontonotes_data_path, coha_data_path)
