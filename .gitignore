@@ -1,3 +1,6 @@
 data
+# work files
+encode_usages.py
+preprocess/extract_usages_from_annotations.py
 # venv
 py38
